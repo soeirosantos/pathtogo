@@ -1,4 +1,4 @@
 # Path To Go
 
-This repo is where I keep some notes and experiments in Go
-for personal reference.
+This is my personal Go playground where I throw some things I do in my free time.
+Many things here can be just crap. Browse it on your own risk XD.
