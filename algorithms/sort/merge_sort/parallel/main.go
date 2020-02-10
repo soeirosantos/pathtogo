@@ -1,10 +1,7 @@
 package main
 
 import (
-	"bufio"
-	"encoding/binary"
 	"fmt"
-	"os"
 )
 
 func main() {
@@ -59,25 +56,4 @@ func merge(left, right []int64) []int64 {
 	merged = append(merged, right...)
 
 	return merged
-}
-
-func read(filename string) ([]int64, error) {
-	f, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	defer f.Close()
-	br := bufio.NewReader(f)
-
-	lb := make([]byte, 8)
-	if _, err = br.Read(lb); err != nil {
-		return nil, err
-	}
-	l := int64(binary.LittleEndian.Uint64(lb))
-	arr := make([]int64, l)
-	if err := binary.Read(br, binary.LittleEndian, &arr); err != nil {
-		return nil, err
-	}
-	return arr, nil
 }
