@@ -1,31 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"encoding/binary"
+	"fmt"
+	"os"
+)
 
 func main() {
-	result := make(chan []int)
 
-	arr := []int{3000, 5, 120, -47, 281, 0, 3, 543, 31, 456, 786, 7, 43, 3, 221}
-
+	result := make(chan []int64)
+	arr := []int64{3000, 5, 120, -47, 281, 0, 3, 543, 31, 456, 786, 7, 43, 3, 221}
 	go mergeSort(arr, result)
 
-	merged := make([]int, len(arr))
-
+	sorted := make([]int64, len(arr))
 	for i, r := range <-result {
-		merged[i] = r
+		sorted[i] = r
 	}
 
-	fmt.Println(merged)
+	fmt.Println(sorted)
 }
 
-func mergeSort(arr []int, result chan []int) {
+func mergeSort(arr []int64, result chan []int64) {
 	if len(arr) < 2 {
 		result <- arr
 		return
 	}
 
-	leftChan := make(chan []int)
-	rightChan := make(chan []int)
+	leftChan := make(chan []int64)
+	rightChan := make(chan []int64)
 
 	mid := len(arr) / 2
 
@@ -38,9 +41,9 @@ func mergeSort(arr []int, result chan []int) {
 	result <- merge(left, right)
 }
 
-func merge(left, right []int) []int {
+func merge(left, right []int64) []int64 {
 
-	merged := []int{}
+	merged := []int64{}
 
 	for len(left) > 0 && len(right) > 0 {
 		if left[0] < right[0] {
@@ -56,4 +59,25 @@ func merge(left, right []int) []int {
 	merged = append(merged, right...)
 
 	return merged
+}
+
+func read(filename string) ([]int64, error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	defer f.Close()
+	br := bufio.NewReader(f)
+
+	lb := make([]byte, 8)
+	if _, err = br.Read(lb); err != nil {
+		return nil, err
+	}
+	l := int64(binary.LittleEndian.Uint64(lb))
+	arr := make([]int64, l)
+	if err := binary.Read(br, binary.LittleEndian, &arr); err != nil {
+		return nil, err
+	}
+	return arr, nil
 }

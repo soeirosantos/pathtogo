@@ -11,12 +11,13 @@ import (
 )
 
 func main() {
-	// arr := generateSample(10000000, 500)
-	// if err := save("big_array", arr); err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println(arr)
-	fmt.Println(read("big_array"))
+	const size = 10000000
+	const seed = 500
+	const filename = "my_array"
+	arr := generateSample(size, seed)
+	if err := save(filename, arr); err != nil {
+		fmt.Println(err)
+	}
 }
 
 // generates a random array of size n
