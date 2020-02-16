@@ -13,5 +13,5 @@ has an interesting discussion about the running time of this parallel merge sort
 and also some references of where to find better algorithms than the applied here.
 
 Surprisingly, while performing some dummy tests in an 8 cores Ubuntu machine this
-implementation shows the worst performance (avg 3x slower) if compared with the 
+implementation shows the worst performance (avg 3x slower) if compared with the
 serial. For the tests, I used an array of random integers with 10 million elements.

@@ -11,6 +11,7 @@ func main() {
 	port := 8080
 
 	http.HandleFunc("/hello", helloWorldHandler)
+	http.HandleFunc("/health", healthHandler)
 
 	log.Printf("Server starting on port %v\n", port)
 
@@ -19,5 +20,9 @@ func main() {
 
 // $ curl -X GET http://localhost:8080/hello
 func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello World\n")
+	fmt.Fprint(w, "Hello World :)\n")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "OK!!\n")
 }
