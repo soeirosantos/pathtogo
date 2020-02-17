@@ -2,10 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 type HealthCheck struct {
@@ -16,14 +17,15 @@ type HealthCheck struct {
 func main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/health", healthCheckHandler).Methods("GET")
+	router.HandleFunc("/health", HealthCheckHandler).Methods("GET")
 
 	log.Println("api started on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 
 	json.NewEncoder(w).Encode(HealthCheck{Status: "OK",
 		Timestamp: time.Now().UnixNano() / 1000000})
