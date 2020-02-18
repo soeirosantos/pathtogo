@@ -185,7 +185,25 @@ func PublishArticleHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteArticleHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
 
+	exists, err := mockExists(id)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if !exists {
+		writeError(w, http.StatusNotFound, errors.New("not found"))
+		return
+	}
+
+	if err := mockDelete(id); err == nil {
+		writeResponse(w, http.StatusNoContent, nil)
+	} else {
+		writeError(w, http.StatusInternalServerError, err)
+	}
 }
 
 func writeResponse(w http.ResponseWriter, code int, payload interface{}) {

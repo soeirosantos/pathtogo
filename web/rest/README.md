@@ -13,3 +13,7 @@ https://www.stevenrombauts.be/2018/02/automatically-recompile-and-restart-your-g
 ```bash
 go get github.com/githubnemo/CompileDaemon
 ```
+
+```bash
+$ ~/go/bin/CompileDaemon -command='go test -v'
+```

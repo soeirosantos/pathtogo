@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func Test_healthCheckHandler(t *testing.T) {
+func TestHealthCheckHandler(t *testing.T) {
 	req, err := http.NewRequest("GET", "/health", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -212,5 +212,34 @@ func TestPublishArticleHandler(t *testing.T) {
 
 	if !publishedArticle.Published {
 		t.Errorf("expected published %v got %v", true, publishedArticle.Published)
+	}
+}
+
+func TestDeleteArticleHandler(t *testing.T) {
+	LoadMock()
+
+	var id string
+	for k := range MockArticles {
+		id = k
+		break
+	}
+
+	req, _ := http.NewRequest("DELETE", fmt.Sprintf("/articles/%s", id), nil)
+
+	rr := httptest.NewRecorder()
+
+	router := mux.NewRouter()
+	router.HandleFunc("/articles/{id}", DeleteArticleHandler)
+
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusNoContent {
+		t.Errorf("Expected status code %d got %d", http.StatusNoContent, rr.Code)
+		return
+	}
+
+	if _, ok := MockArticles[id]; ok {
+		t.Error("expected article to be removed")
+		return
 	}
 }
