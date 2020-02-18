@@ -1,7 +1,7 @@
 # REST API
 
 ```bash
-$ mkdir rest-api && cd rest-api && touch main.go
+$ mkdir rest && cd rest && touch main.go
 $ go mod init github.com/soeirosantos/pathtogo/web/rest
 $ go get -u github.com/gorilla/mux
 ```
